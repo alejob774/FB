@@ -16,7 +16,7 @@ medio=pygame.transform.scale(medio,(80,80))
 abajo=pygame.image.load("abajo.png").convert_alpha()
 abajo=pygame.transform.scale(abajo,(80,80))
 
-imagenes=[arriba,medio,abajo]
+imagenes=[arriba,medio,abajo,medio]
 
 fps = pygame.time.Clock()#medir el tiempo 
 
@@ -46,7 +46,7 @@ def main():
         posicion[1]+=vel
         
         superficie.blit(fondo,(0,0)) #foto de fondo sale en pantalla
-        imagen=imagenes[change_sprite % 3]#para que se repita las fotos 0,1,2
+        imagen=imagenes[change_sprite % 4]#para que se repita las fotos 0,1,2
         superficie.blit(imagen,(int(posicion[0]),int(posicion[1])))
         
         #bordes
