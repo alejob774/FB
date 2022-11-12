@@ -1,9 +1,3 @@
-#Flappy Bird 4.0
-#Proyecto de Programación por Karen Andrea Melendez Redondo, Geronimo Rojas Guevara y Alejandro Borja Abad
-
-#170 de diferencia
-
-
 import pygame
 import random
 
@@ -49,13 +43,16 @@ class tubes(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = x , y
+        self.hitbox=self.rect.inflate(-500,-500)
 
     def update (self):
         self.rect.x -= 3 #se mueve 3 pixeles a la izquierda
         if self.rect.x <= -size_x:
             self.kill()
 
-pipes= pygame.sprite.Group()
+pipes= pygame.sprite.Group() 
+pipe_timer = 0
+
 
 class flappy(pygame.sprite.Sprite):
     def __init__ (self, x, y, birdy):
@@ -64,9 +61,9 @@ class flappy(pygame.sprite.Sprite):
         self.posicion = size_y/2-fby/2
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = x, y
+        self.hitbox=(self.rect.x-20, self.rect.y-20, 20,20)
         
 birds = pygame.sprite.Group()
-pipe_timer = 0
 
 #Juego en si
 
@@ -110,7 +107,6 @@ while volando:
     #colision 
     for i in birds:
         if pygame.sprite.spritecollide(i, pipes, False):
-            
             volando = False
 
       
@@ -118,4 +114,3 @@ while volando:
 pygame.quit()
 
 
-    
