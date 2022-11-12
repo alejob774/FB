@@ -10,84 +10,112 @@ import random
 pygame.init()
 
 #Pantalla
-width = 640/1.25
-height = 960/1.25
-fps = 60
+size_x = 640/1.25    #Tamaño de pantalla x
+size_y = 960/1.25    #Tamaño de pantalla y
+fps = 60             #FPS del juego
 
-pygame.display.set_caption("Flappy Bird 4.0")
-screen = pygame.display.set_mode([width, height])
-timer = pygame.time.Clock()
+screen = pygame.display.set_mode([size_x, size_y])  #Pantalla sobre la que se trabajara
+timer = pygame.time.Clock()  #Creacion de timer para diferentes procesos
 
 #Imagenes
-fondo = pygame.image.load("/Users/alejandroborja/Documents/U/I/Programacion/FB/fondo.png")
-fondo = pygame.transform.scale(fondo,(width, height))
-fb = pygame.image.load("/Users/alejandroborja/Documents/U/I/Programacion/FB/FB_WU.png")
-fbx = width/7
+fondo = pygame.image.load("fondo.png").convert()
+fondo = pygame.transform.scale(fondo,(size_x, size_y))  
+
+fbx = size_x/7 #Tamaño de flappy bird en x
 fby = ((fbx)/17)*12
-fb = pygame.transform.scale(fb,(fbx,fby))
-birdy = fb
-tu = pygame.image.load("/Users/alejandroborja/Documents/U/I/Programacion/FB/pipe_top.png")
-tu = pygame.transform.scale(tu,(fbx*1.3, height))
-td = pygame.image.load("/Users/alejandroborja/Documents/U/I/Programacion/FB/pipe_bot.png")
-td = pygame.transform.scale(td,(fbx*1.3, height))
+
+arriba = pygame.image.load("arriba.png").convert_alpha()         
+arriba = pygame.transform.scale(arriba,(fbx,fby))                                                       
+
+birdy = arriba  #Flappy Bird
+
+bot = pygame.image.load("bot.png").convert_alpha()      
+bot = pygame.transform.scale(bot,(fbx*1.3, size_y))   #Tubo de arriba para abajo
+
+top = pygame.image.load("top.png").convert_alpha()      
+top = pygame.transform.scale(top,(fbx*1.3, size_y))  #Tubo de abajo para arriba
 
 #Variables
-pos_y = height/2-fby/2
-s_y = 0
-wing = 13
-gravity = 0.9
+posicion = size_y/2-fby/2   #Posicion de Flappy Bird para referencia
+vel = 0          #Cambio de velocidades que tendra flappy bird en el eje y
+saltar = 13     #Cuanto saltara el pajaro por aleteo
+gravity = 1   #Cuanto bajara cada segundo flappy bird (gravedad)
 
 
-class tubes:
-    def __init__ (self):
-        h = random.randint(220, 648)
-        self.x = width + fbx*1.3
-        self.yd = height + h
-        self.yu = -height -170 +h
-        self.pictd = td
-        self.pictu = tu
+class tubes(pygame.sprite.Sprite):
+    
+    def __init__ (self,x,y,image):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.x,self.rect.y = x , y
 
-    def update (self, pos):
-        self.x -= 400
-        if self.x <= (-width/7*1.3*2):
+    def update (self):
+        self.rect.x -= 3 #se mueve 3 pixeles a la izquierda
+        if self.rect.x <= -size_x:
             self.kill()
 
-    def gameover (self, birdy):
-        gameover = False
-        
+pipes= pygame.sprite.Group()
 
+class flappy(pygame.sprite.Sprite):
+    def __init__ (self, x, y, birdy):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = birdy
+        self.posicion = size_y/2-fby/2
+        self.rect = self.image.get_rect()
+        self.rect.x,self.rect.y = x, y
+        
+birds = pygame.sprite.Group()
+pipe_timer = 0
 
 #Juego en si
+
 volando = True
+bird = flappy(150, 150, birdy)
+birds.add(bird)
 while volando:
 
     timer.tick(fps)
     screen.blit(fondo,(0,0))
+    birds.draw(screen)
+    pipes.draw(screen)
+    pipes.update()
 
-    screen.blit(birdy,((width/5.5),(pos_y)))
+    if pipe_timer <= 3:
+        x_top,x_bottom = 550,550
+        y_bottom = random.randint(-700,-280)
+        y_top = y_bottom + 170 + bot.get_height() #170 es distancia entre tubos
+        pipes.add(tubes(x_top,y_top,bot))
+        pipes.add(tubes(x_bottom,y_bottom,top))
+        pipe_timer = 200 #cada vez que el timer se termine se hace de nuevo
+    pipe_timer -= 2
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             volando = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                if pos_y - wing < 1.75*fby:
-                    pass
-                else:
-                    s_y = - wing
-    
-    if pos_y + s_y < height - fby:
-        pos_y += s_y
-        s_y += gravity
-    else:
-        pos_y = (height - fby)
+            for bird in birds:
+                if event.key == pygame.K_SPACE:
+                    if bird.rect.y - saltar < 1.75 * fby:
+                        pass
+                    else:
+                        vel = - saltar
+    for bird in birds:
+        if bird.rect.y + vel < size_y - fby:
+            bird.rect.y += vel
+            vel += gravity
+        else:
+            bird.rect.y = (size_y - fby)
 
-    
+    #colision 
+    for i in birds:
+        if pygame.sprite.spritecollide(i, pipes, False):
+            
+            volando = False
 
-
-
-
+      
     pygame.display.flip()
 pygame.quit()
+
 
     
