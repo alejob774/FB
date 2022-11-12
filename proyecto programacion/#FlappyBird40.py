@@ -4,19 +4,19 @@ import random
 pygame.init()
 
 #Pantalla
-size_x = 640/1.25    #Tamaño de pantalla x
-size_y = 960/1.25    #Tamaño de pantalla y
-fps = 60             #FPS del juego
+size_x = 640/1.25               #Tamaño de pantalla x
+size_y = 960/1.25               #Tamaño de pantalla y
+fps = 60                        #FPS del juego
 
 screen = pygame.display.set_mode([size_x, size_y])  #Pantalla sobre la que se trabajara
-timer = pygame.time.Clock()  #Creacion de timer para diferentes procesos
+timer = pygame.time.Clock()                         #Creacion de timer para diferentes procesos
 
 #Imagenes
 fondo = pygame.image.load("fondo.png").convert()
 fondo = pygame.transform.scale(fondo,(size_x, size_y))  
 
-fbx = size_x/7 #Tamaño de flappy bird en x
-fby = ((fbx)/17)*12
+fbx = size_x/7              #Tamaño de flappy bird en x
+fby = ((fbx)/17)*12         #tamaño de flappy en y
 
 arriba = pygame.image.load("arriba.png").convert_alpha()         
 arriba = pygame.transform.scale(arriba,(fbx,fby))                                                       
@@ -30,10 +30,10 @@ top = pygame.image.load("top.png").convert_alpha()
 top = pygame.transform.scale(top,(fbx*1.3, size_y))  #Tubo de abajo para arriba
 
 #Variables
-posicion = size_y/2-fby/2   #Posicion de Flappy Bird para referencia
-vel = 0          #Cambio de velocidades que tendra flappy bird en el eje y
-saltar = 13     #Cuanto saltara el pajaro por aleteo
-gravity = 1   #Cuanto bajara cada segundo flappy bird (gravedad)
+posicion = size_y/2-fby/2       #Posicion de Flappy Bird para referencia
+vel = 0                         #Cambio de velocidades que tendra flappy bird en el eje y
+saltar = 13                     #Cuanto saltara el pajaro por aleteo
+gravity = 1                     #Cuanto bajara cada segundo flappy bird (gravedad)
 
 
 class tubes(pygame.sprite.Sprite):
@@ -43,12 +43,11 @@ class tubes(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = x , y
-        self.hitbox=self.rect.inflate(-500,-500)
 
     def update (self):
-        self.rect.x -= 3 #se mueve 3 pixeles a la izquierda
-        if self.rect.x <= -size_x:
-            self.kill()
+        self.rect.x -= 3            #se mueve 3 pixeles a la izquierda
+        if self.rect.x <= -size_x:  
+            self.kill()             #cuando salga de pantalla se muere
 
 pipes= pygame.sprite.Group() 
 pipe_timer = 0
@@ -61,7 +60,7 @@ class flappy(pygame.sprite.Sprite):
         self.posicion = size_y/2-fby/2
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = x, y
-        self.hitbox=(self.rect.x-20, self.rect.y-20, 20,20)
+        self.rect=self.rect.inflate(-24,-25)     #para cambaiar las dimensiones del rect
         
 birds = pygame.sprite.Group()
 
@@ -81,10 +80,10 @@ while volando:
     if pipe_timer <= 3:
         x_top,x_bottom = 550,550
         y_bottom = random.randint(-700,-280)
-        y_top = y_bottom + 170 + bot.get_height() #170 es distancia entre tubos
+        y_top = y_bottom + 170 + bot.get_height()   #170 es distancia entre tubos
         pipes.add(tubes(x_top,y_top,bot))
         pipes.add(tubes(x_bottom,y_bottom,top))
-        pipe_timer = 200 #cada vez que el timer se termine se hace de nuevo
+        pipe_timer = 200                            #cada vez que el timer se termine se hace de nuevo
     pipe_timer -= 2
 
     for event in pygame.event.get():
@@ -112,5 +111,3 @@ while volando:
       
     pygame.display.flip()
 pygame.quit()
-
-
