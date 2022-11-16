@@ -1,4 +1,4 @@
-import pygame, sys, time, random 
+import pygame
 from pygame.locals import *
 import FlappyBirdFinal
 
