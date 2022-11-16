@@ -99,7 +99,7 @@ def juego():
             bird.image = bird.sprites[contador%3]
 
         #Letra
-        font = pygame.font.Font("/Users/alejandroborja/Documents/U/I/Programacion/FB/Flappy-Bird.ttf", 80)
+        font = pygame.font.Font("Flappy-Bird.ttf", 80)
         txt = font.render(str(score//2), True, (255,255,255))
         
         if gameover == False:
