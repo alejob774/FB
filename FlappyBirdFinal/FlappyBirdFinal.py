@@ -1,8 +1,6 @@
 import pygame
 import random
 
-pygame.init()
-
 #Pantalla
 size_x = 640/1.25               #Tamaño de pantalla x
 size_y = 960/1.25               #Tamaño de pantalla y
