@@ -71,7 +71,7 @@ cd Capstone-Project-Reportes
 **Windows (PowerShell o CMD):**
 ```bash
 python -m venv venv
-.env\Scriptsctivate
+.\venv\Scripts\activate
 ```
 
 **Para desactivar el entorno:**
@@ -179,38 +179,6 @@ DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/mi_basedatos
 | **"Port already in use"** | Otro proceso usa el puerto. | Cambia el puerto: `--port 8001` o `-p 3001` en React. |
 | **Fallo al instalar dependencias** | Entorno virtual no activado. | Activa `venv` antes de `pip install`. |
 | **Frontend no se comunica con backend** | CORS no configurado en FastAPI. | Agrega middleware CORS en `agent.py`. |
-
----
-
-## Contribución
-
-Si deseas contribuir al proyecto:
-
-1. Haz un **fork** del repositorio.
-2. Crea una nueva rama para tu cambio:
-   ```bash
-   git checkout -b feature/nueva-funcionalidad
-   ```
-3. Realiza tus cambios y haz commit:
-   ```bash
-   git commit -m "Agrega nueva funcionalidad"
-   ```
-4. Envía un **Pull Request** con una descripción clara del cambio.
-
----
-
-## Licencia
-
-Este proyecto se distribuye bajo la licencia **MIT**.
-
-```
-MIT License
-
-Copyright (c) 2025
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files...
-```
 
 ---
 
