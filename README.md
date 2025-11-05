@@ -1,4 +1,4 @@
-# Capstone Project - Reportes
+# Capstone Project - Agente Inteligente para Gestión de datos tabulares
 
 ## Descripción general
 **Capstone Project - Reportes** es una aplicación compuesta por un **backend desarrollado con FastAPI** y un **frontend en Node.js (React)** que permite generar, visualizar y administrar reportes de manera dinámica.  
