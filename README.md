@@ -198,7 +198,7 @@ cd Capstone-Project-Reportes
 
 # Crear entorno virtual
 python -m venv venv
-.env\Scriptsctivate
+.\venv\Scripts\activate
 
 # Instalar dependencias
 pip install -r requirements.txt
